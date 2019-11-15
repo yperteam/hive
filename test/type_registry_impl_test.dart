@@ -1,6 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive/src/registry/type_registry_impl.dart';
-import 'package:test/test.dart';
 
 import 'common.dart';
 

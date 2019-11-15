@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/src/adapters/big_int_adapter.dart';
 import 'package:hive/src/binary/binary_reader_impl.dart';
 import 'package:hive/src/binary/binary_writer_impl.dart';
-import 'package:test/test.dart';
 
 void main() {
   group('BigIntAdapter', () {

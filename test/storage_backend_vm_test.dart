@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive/src/backend/read_write_sync.dart';
 import 'package:hive/src/backend/storage_backend_vm.dart';
@@ -10,7 +11,6 @@ import 'package:hive/src/binary/frame.dart';
 import 'package:hive/src/crypto_helper.dart';
 import 'package:hive/src/io/frame_io_helper.dart';
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
 import 'package:path/path.dart' as path;
 
 import 'common.dart';

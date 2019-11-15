@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive/src/binary/binary_writer_impl.dart';
 import 'package:hive/src/binary/frame.dart';
 import 'package:hive/src/crypto_helper.dart';
 import 'package:hive/src/hive_impl.dart';
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
 
 import 'common.dart';
 

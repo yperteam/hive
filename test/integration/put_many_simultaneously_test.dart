@@ -1,6 +1,5 @@
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-import '../util/is_browser.dart';
 import 'integration.dart';
 
 Future _performTest(bool lazy) async {
@@ -28,8 +27,8 @@ Future _performTest(bool lazy) async {
 
 void main() {
   group('put many entries simultaneously', () {
-    test('normal box', () => _performTest(false));
+    test('normal box', () => _performTest(false), timeout: longTimeout);
 
-    test('lazy box', () => _performTest(true));
-  }, timeout: longTimeout);
+    test('lazy box', () => _performTest(true), timeout: longTimeout);
+  });
 }

@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/src/binary/binary_writer_impl.dart';
 import 'package:hive/src/binary/frame.dart';
 import 'package:hive/src/registry/type_registry_impl.dart';
-import 'package:test/test.dart';
 
 List<int> bytes(ByteData byteData) => byteData.buffer.asUint8List();
 

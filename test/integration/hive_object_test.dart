@@ -1,7 +1,7 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive/src/hive_impl.dart';
 import 'package:hive/src/hive_object.dart';
-import 'package:test/test.dart';
 
 import 'integration.dart';
 
@@ -60,8 +60,8 @@ Future _performTest(bool lazy) async {
 
 void main() {
   group('use HiveObject to update and delete entries', () {
-    test('normal box', () => _performTest(false));
+    test('normal box', () => _performTest(false), timeout: longTimeout);
 
-    test('lazy box', () => _performTest(true));
-  }, timeout: longTimeout);
+    test('lazy box', () => _performTest(true), timeout: longTimeout);
+  });
 }

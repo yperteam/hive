@@ -1,5 +1,5 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
-import 'package:test/test.dart';
 
 void main() {
   test('test unnecessary code', () {

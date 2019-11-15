@@ -1,11 +1,10 @@
 @TestOn('vm')
 
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/src/adapters/date_time_adapter.dart';
 import 'package:hive/src/hive_impl.dart';
-import 'package:test/test.dart';
 import 'package:path/path.dart' as path;
 
 import 'common.dart';

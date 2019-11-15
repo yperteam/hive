@@ -1,7 +1,7 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive/src/binary/frame.dart';
 import 'package:hive/src/box/keystore.dart';
-import 'package:test/test.dart';
 
 import 'common.dart';
 

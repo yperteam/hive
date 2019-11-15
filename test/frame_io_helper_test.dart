@@ -3,9 +3,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/src/box/keystore.dart';
 import 'package:hive/src/io/frame_io_helper.dart';
-import 'package:test/test.dart';
 
 import 'common.dart';
 import 'frames.dart';

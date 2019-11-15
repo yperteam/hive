@@ -5,6 +5,7 @@ import 'dart:html';
 import 'dart:indexed_db';
 import 'dart:typed_data';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive/src/backend/storage_backend_js.dart';
 import 'package:hive/src/binary/binary_writer_impl.dart';
@@ -12,7 +13,6 @@ import 'package:hive/src/binary/frame.dart';
 import 'package:hive/src/box/change_notifier.dart';
 import 'package:hive/src/box/keystore.dart';
 import 'package:hive/src/crypto_helper.dart';
-import 'package:test/test.dart';
 
 import 'frames.dart';
 

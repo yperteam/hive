@@ -1,11 +1,10 @@
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 import '../frames.dart';
-import '../util/is_browser.dart';
 import 'integration.dart';
 
 Future _performTest(bool lazy) async {
-  var repeat = isBrowser ? 100 : 1000;
+  var repeat = isBrowser ? 50 : 500;
   var box = await openBox(lazy);
   for (var i = 0; i < repeat; i++) {
     for (var frame in valueTestFrames) {
@@ -24,8 +23,8 @@ Future _performTest(bool lazy) async {
 
 void main() {
   group('put many entries', () {
-    test('normal box', () => _performTest(false));
+    test('normal box', () => _performTest(false), timeout: longTimeout);
 
-    test('lazy box', () => _performTest(true));
-  }, timeout: longTimeout);
+    test('lazy box', () => _performTest(true), timeout: longTimeout);
+  });
 }

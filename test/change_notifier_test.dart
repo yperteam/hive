@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive/src/binary/frame.dart';
 import 'package:hive/src/box/change_notifier.dart';
 import 'package:mockito/mockito.dart';
-import 'package:test/test.dart';
 
 class StreamControllerMock<T> extends Mock implements StreamController<T> {}
 

@@ -1,6 +1,7 @@
 @TestOn('vm')
+
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/src/io/buffered_file_reader.dart';
-import 'package:test/test.dart';
 
 import 'common.dart';
 

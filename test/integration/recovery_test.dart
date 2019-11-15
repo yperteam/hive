@@ -3,9 +3,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/src/box/keystore.dart';
 import 'package:hive/src/hive_impl.dart';
-import 'package:test/test.dart';
 import 'package:path/path.dart' as path;
 
 import '../common.dart';
@@ -59,8 +59,10 @@ Future _performTestWithoutOutput(bool lazy) {
 
 void main() {
   group('test recovery', () {
-    test('normal box', () => _performTestWithoutOutput(false));
+    test('normal box', () => _performTestWithoutOutput(false),
+        timeout: longTimeout);
 
-    test('lazy box', () => _performTestWithoutOutput(true));
-  }, timeout: longTimeout);
+    test('lazy box', () => _performTestWithoutOutput(true),
+        timeout: longTimeout);
+  });
 }
