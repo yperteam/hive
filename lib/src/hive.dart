@@ -46,7 +46,7 @@ abstract class HiveInterface implements TypeRegistry {
   /// Closes all open boxes.
   Future<void> close();
 
-  Future<void> deleteBoxFromDisk(String nme);
+  Future<void> deleteBoxFromDisk(String name, {String path});
 
   /// Deletes all currently open boxes from disk.
   ///
