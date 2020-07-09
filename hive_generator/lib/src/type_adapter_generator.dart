@@ -18,7 +18,7 @@ class TypeAdapterGenerator extends GeneratorForAnnotation<HiveType> {
     var getters = gettersAndSetters[0];
     verifyFieldIndices(getters);
 
-    var setters = gettersAndSetters[1];
+    var setters = gettersAndSetters[0];
     verifyFieldIndices(setters);
 
     var typeId = getTypeId(annotation);
@@ -31,7 +31,7 @@ class TypeAdapterGenerator extends GeneratorForAnnotation<HiveType> {
     return '''
     class $adapterName extends TypeAdapter<${cls.name}> {
       @override
-      final typeId = $typeId;
+      final int typeId = $typeId;
 
       @override
       ${cls.name} read(BinaryReader reader) {
@@ -69,6 +69,9 @@ class TypeAdapterGenerator extends GeneratorForAnnotation<HiveType> {
     var supertypes = cls.allSupertypes.map((it) => it.element);
     for (var type in [cls, ...supertypes]) {
       for (var accessor in type.accessors) {
+        if (accessor.name == "runtimeType" ||
+            accessor.name == "hashCode" ||
+            accessor.name == "copyWith") continue;
         if (accessor.isSetter) {
           var name = accessor.name;
           accessorNames.add(name.substring(0, name.length - 1));
@@ -87,25 +90,22 @@ class TypeAdapterGenerator extends GeneratorForAnnotation<HiveType> {
 
     var getters = <AdapterField>[];
     var setters = <AdapterField>[];
+    var fieldNum = 0;
     for (var name in accessorNames) {
-      var getter = cls.lookUpGetter(name, library);
+      final getter = cls.lookUpGetter(name, library);
+      final setter = cls.lookUpSetter('$name=', library);
+
       if (getter != null) {
-        var getterAnn =
-            getHiveFieldAnn(getter.variable) ?? getHiveFieldAnn(getter);
-        if (getterAnn != null) {
-          var field = getter.variable;
-          getters.add(AdapterField(getterAnn.index, field.name, field.type));
-        }
+        final field = getter.variable;
+        getters.add(AdapterField(fieldNum, field.name, field.type));
       }
 
-      var setter = cls.lookUpSetter('$name=', library);
       if (setter != null) {
-        var setterAnn =
-            getHiveFieldAnn(setter.variable) ?? getHiveFieldAnn(setter);
-        if (setterAnn != null) {
-          var field = setter.variable;
-          setters.add(AdapterField(setterAnn.index, field.name, field.type));
-        }
+        final field = setter.variable;
+        setters.add(AdapterField(fieldNum, field.name, field.type));
+      }
+      if (setter != null || getter != null) {
+        fieldNum++;
       }
     }
 
