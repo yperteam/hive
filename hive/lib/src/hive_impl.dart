@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 import 'dart:typed_data';
@@ -20,6 +21,7 @@ import 'backend/storage_backend.dart';
 /// Not part of public API
 class HiveImpl extends TypeRegistryImpl implements HiveInterface {
   final _boxes = HashMap<String, BoxBaseImpl>();
+  final _openingBoxes = HashMap<String, Future>();
   final BackendManager _manager;
   final Random _secureRandom = Random.secure();
 
@@ -73,24 +75,46 @@ class HiveImpl extends TypeRegistryImpl implements HiveInterface {
         return box(name);
       }
     } else {
-      StorageBackend backend;
-      if (bytes != null) {
-        backend = StorageBackendMemory(bytes, cipher);
-      } else {
-        backend = await _manager.open(name, path ?? homePath, recovery, cipher);
+      if (_openingBoxes.containsKey(name)) {
+        await _openingBoxes[name];
+        if (lazy) {
+          return lazyBox(name);
+        } else {
+          return box(name);
+        }
       }
 
-      BoxBaseImpl<E> box;
-      if (lazy) {
-        box = LazyBoxImpl<E>(this, name, comparator, compaction, backend);
-      } else {
-        box = BoxImpl<E>(this, name, comparator, compaction, backend);
+      var completer = Completer();
+      _openingBoxes[name] = completer.future;
+
+      try {
+        StorageBackend backend;
+        if (bytes != null) {
+          backend = StorageBackendMemory(bytes, cipher);
+        } else {
+          backend =
+              await _manager.open(name, path ?? homePath, recovery, cipher);
+        }
+
+        BoxBaseImpl<E> newBox;
+        if (lazy) {
+          newBox = LazyBoxImpl<E>(this, name, comparator, compaction, backend);
+        } else {
+          newBox = BoxImpl<E>(this, name, comparator, compaction, backend);
+        }
+
+        await newBox.initialize();
+        _boxes[name] = newBox;
+
+        completer.complete();
+        return newBox;
+      } catch (error, stackTrace) {
+        completer.completeError(error, stackTrace);
+        rethrow;
+      } finally {
+        // ignore: unawaited_futures
+        _openingBoxes.remove(name);
       }
-
-      await box.initialize();
-      _boxes[name] = box;
-
-      return box;
     }
   }
 
@@ -176,7 +200,9 @@ class HiveImpl extends TypeRegistryImpl implements HiveInterface {
 
   /// Not part of public API
   void unregisterBox(String name) {
-    _boxes.remove(name.toLowerCase());
+    name = name.toLowerCase();
+    _openingBoxes.remove(name);
+    _boxes.remove(name);
   }
 
   @override

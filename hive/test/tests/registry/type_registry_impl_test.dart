@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:hive/src/adapters/ignored_type_adapter.dart';
 import 'package:hive/src/registry/type_registry_impl.dart';
 import 'package:test/test.dart';
 
@@ -102,6 +103,46 @@ void main() {
 
       registry.resetAdapters();
       expect(registry.findAdapterForValue(123), null);
+    });
+
+    group('.isAdapterRegistered()', () {
+      test('returns false if adapter is not found', () {
+        var registry = TypeRegistryImpl();
+
+        expect(registry.isAdapterRegistered(0), false);
+      });
+
+      test('returns true if adapter is found', () {
+        var registry = TypeRegistryImpl();
+        var adapter = TestAdapter();
+        registry.registerAdapter(adapter);
+
+        expect(registry.isAdapterRegistered(0), true);
+      });
+
+      test('unsupported typeId', () {
+        var registry = TypeRegistryImpl();
+        expect(() => registry.isAdapterRegistered(-1),
+            throwsHiveError('not allowed'));
+        expect(() => registry.isAdapterRegistered(224),
+            throwsHiveError('not allowed'));
+      });
+    });
+
+    group('.ignoreTypeId()', () {
+      test('registers IgnoredTypeAdapter', () {
+        var registry = TypeRegistryImpl();
+        registry.ignoreTypeId(0);
+        var resolved = registry.findAdapterForTypeId(32);
+        expect(resolved.adapter is IgnoredTypeAdapter, true);
+      });
+
+      test('duplicte typeId', () {
+        var registry = TypeRegistryImpl();
+        registry.registerAdapter(TestAdapter());
+        expect(() => registry.ignoreTypeId(0),
+            throwsHiveError('already a TypeAdapter for typeId'));
+      });
     });
   });
 }
